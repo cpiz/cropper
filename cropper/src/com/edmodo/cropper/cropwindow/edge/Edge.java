@@ -30,11 +30,6 @@ public enum Edge {
 
     // Private Constants ///////////////////////////////////////////////////////
 
-    // Minimum distance in pixels that one edge can get to its opposing edge.
-    // This is an arbitrary value that simply prevents the crop window from
-    // becoming too small.
-    public static final int MIN_CROP_LENGTH_PX = 40;
-
     // Member Variables ////////////////////////////////////////////////////////
 
     private float mCoordinate;
@@ -82,20 +77,20 @@ public enum Edge {
      * @param imageSnapRadius the radius (in pixels) at which the edge should
      *            snap to the image
      */
-    public void adjustCoordinate(float x, float y, Rect imageRect, float imageSnapRadius, float aspectRatio) {
+    public void adjustCoordinate(float x, float y, Rect imageRect, float imageSnapRadius, float minCropLength, float aspectRatio) {
 
         switch (this) {
             case LEFT:
-                mCoordinate = adjustLeft(x, imageRect, imageSnapRadius, aspectRatio);
+                mCoordinate = adjustLeft(x, imageRect, imageSnapRadius, minCropLength, aspectRatio);
                 break;
             case TOP:
-                mCoordinate = adjustTop(y, imageRect, imageSnapRadius, aspectRatio);
+                mCoordinate = adjustTop(y, imageRect, imageSnapRadius, minCropLength, aspectRatio);
                 break;
             case RIGHT:
-                mCoordinate = adjustRight(x, imageRect, imageSnapRadius, aspectRatio);
+                mCoordinate = adjustRight(x, imageRect, imageSnapRadius, minCropLength, aspectRatio);
                 break;
             case BOTTOM:
-                mCoordinate = adjustBottom(y, imageRect, imageSnapRadius, aspectRatio);
+                mCoordinate = adjustBottom(y, imageRect, imageSnapRadius, minCropLength, aspectRatio);
                 break;
         }
     }
@@ -135,9 +130,9 @@ public enum Edge {
      * Returns whether or not you can re-scale the image based on whether any edge would be out of bounds.
      * Checks all the edges for a possibility of jumping out of bounds.
      * 
-     * @param Edge the Edge that is about to be expanded
+     * @param edge the Edge that is about to be expanded
      * @param imageRect the rectangle of the picture
-     * @param aspectratio the desired aspectRatio of the picture.
+     * @param aspectRatio the desired aspectRatio of the picture.
      * 
      * @return whether or not the new image would be out of bounds.
      */
@@ -408,7 +403,7 @@ public enum Edge {
      * @param imageSnapRadius the snap distance to the image edge (in pixels)
      * @return the actual x-position of the left edge
      */
-    private static float adjustLeft(float x, Rect imageRect, float imageSnapRadius, float aspectRatio) {
+    private static float adjustLeft(float x, Rect imageRect, float imageSnapRadius, float minCropLength, float aspectRatio) {
 
         float resultX = x;
 
@@ -422,12 +417,12 @@ public enum Edge {
             float resultXVert = Float.POSITIVE_INFINITY;
 
             // Checks if the window is too small horizontally
-            if (x >= Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX)
-                resultXHoriz = Edge.RIGHT.getCoordinate() - MIN_CROP_LENGTH_PX;
+            if (x >= Edge.RIGHT.getCoordinate() - minCropLength)
+                resultXHoriz = Edge.RIGHT.getCoordinate() - minCropLength;
 
             // Checks if the window is too small vertically
-            if (((Edge.RIGHT.getCoordinate() - x) / aspectRatio) <= MIN_CROP_LENGTH_PX)
-                resultXVert = Edge.RIGHT.getCoordinate() - (MIN_CROP_LENGTH_PX * aspectRatio);
+            if (((Edge.RIGHT.getCoordinate() - x) / aspectRatio) <= minCropLength)
+                resultXVert = Edge.RIGHT.getCoordinate() - (minCropLength * aspectRatio);
 
             resultX = Math.min(resultX, Math.min(resultXHoriz, resultXVert));
         }
@@ -443,7 +438,7 @@ public enum Edge {
      * @param imageSnapRadius the snap distance to the image edge (in pixels)
      * @return the actual x-position of the right edge
      */
-    private static float adjustRight(float x, Rect imageRect, float imageSnapRadius, float aspectRatio) {
+    private static float adjustRight(float x, Rect imageRect, float imageSnapRadius, float minCropLength, float aspectRatio) {
 
         float resultX = x;
 
@@ -458,12 +453,12 @@ public enum Edge {
             float resultXVert = Float.NEGATIVE_INFINITY;
 
             // Checks if the window is too small horizontally
-            if (x <= Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX)
-                resultXHoriz = Edge.LEFT.getCoordinate() + MIN_CROP_LENGTH_PX;
+            if (x <= Edge.LEFT.getCoordinate() + minCropLength)
+                resultXHoriz = Edge.LEFT.getCoordinate() + minCropLength;
 
             // Checks if the window is too small vertically
-            if (((x - Edge.LEFT.getCoordinate()) / aspectRatio) <= MIN_CROP_LENGTH_PX) {
-                resultXVert = Edge.LEFT.getCoordinate() + (MIN_CROP_LENGTH_PX * aspectRatio);
+            if (((x - Edge.LEFT.getCoordinate()) / aspectRatio) <= minCropLength) {
+                resultXVert = Edge.LEFT.getCoordinate() + (minCropLength * aspectRatio);
             }
 
             resultX = Math.max(resultX, Math.max(resultXHoriz, resultXVert));
@@ -482,7 +477,7 @@ public enum Edge {
      * @param imageSnapRadius the snap distance to the image edge (in pixels)
      * @return the actual y-position of the top edge
      */
-    private static float adjustTop(float y, Rect imageRect, float imageSnapRadius, float aspectRatio) {
+    private static float adjustTop(float y, Rect imageRect, float imageSnapRadius, float minCropLength, float aspectRatio) {
 
         float resultY = y;
 
@@ -496,12 +491,12 @@ public enum Edge {
             float resultYHoriz = Float.POSITIVE_INFINITY;
 
             // Checks if the window is too small vertically
-            if (y >= Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX)
-                resultYHoriz = Edge.BOTTOM.getCoordinate() - MIN_CROP_LENGTH_PX;
+            if (y >= Edge.BOTTOM.getCoordinate() - minCropLength)
+                resultYHoriz = Edge.BOTTOM.getCoordinate() - minCropLength;
 
             // Checks if the window is too small horizontally
-            if (((Edge.BOTTOM.getCoordinate() - y) * aspectRatio) <= MIN_CROP_LENGTH_PX)
-                resultYVert = Edge.BOTTOM.getCoordinate() - (MIN_CROP_LENGTH_PX / aspectRatio);
+            if (((Edge.BOTTOM.getCoordinate() - y) * aspectRatio) <= minCropLength)
+                resultYVert = Edge.BOTTOM.getCoordinate() - (minCropLength / aspectRatio);
 
             resultY = Math.min(resultY, Math.min(resultYHoriz, resultYVert));
 
@@ -519,7 +514,7 @@ public enum Edge {
      * @param imageSnapRadius the snap distance to the image edge (in pixels)
      * @return the actual y-position of the bottom edge
      */
-    private static float adjustBottom(float y, Rect imageRect, float imageSnapRadius, float aspectRatio) {
+    private static float adjustBottom(float y, Rect imageRect, float imageSnapRadius, float minCropLength, float aspectRatio) {
 
         float resultY = y;
 
@@ -532,12 +527,12 @@ public enum Edge {
             float resultYHoriz = Float.NEGATIVE_INFINITY;
 
             // Checks if the window is too small vertically
-            if (y <= Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX)
-                resultYVert = Edge.TOP.getCoordinate() + MIN_CROP_LENGTH_PX;
+            if (y <= Edge.TOP.getCoordinate() + minCropLength)
+                resultYVert = Edge.TOP.getCoordinate() + minCropLength;
 
             // Checks if the window is too small horizontally
-            if (((y - Edge.TOP.getCoordinate()) * aspectRatio) <= MIN_CROP_LENGTH_PX)
-                resultYHoriz = Edge.TOP.getCoordinate() + (MIN_CROP_LENGTH_PX / aspectRatio);
+            if (((y - Edge.TOP.getCoordinate()) * aspectRatio) <= minCropLength)
+                resultYHoriz = Edge.TOP.getCoordinate() + (minCropLength / aspectRatio);
 
             resultY = Math.max(resultY, Math.max(resultYHoriz, resultYVert));
         }

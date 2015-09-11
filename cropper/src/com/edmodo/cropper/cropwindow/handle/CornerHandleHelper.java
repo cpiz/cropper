@@ -37,13 +37,14 @@ class CornerHandleHelper extends HandleHelper {
                           float y,
                           float targetAspectRatio,
                           Rect imageRect,
-                          float snapRadius) {
+                          float snapRadius,
+                          float minCropLength) {
 
         final EdgePair activeEdges = getActiveEdges(x, y, targetAspectRatio);
         final Edge primaryEdge = activeEdges.primary;
         final Edge secondaryEdge = activeEdges.secondary;
 
-        primaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, targetAspectRatio);
+        primaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, minCropLength, targetAspectRatio);
         secondaryEdge.adjustCoordinate(targetAspectRatio);
 
         if (secondaryEdge.isOutsideMargin(imageRect, snapRadius)) {

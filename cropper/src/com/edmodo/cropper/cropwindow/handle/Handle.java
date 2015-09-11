@@ -47,17 +47,19 @@ public enum Handle {
     public void updateCropWindow(float x,
                                  float y,
                                  Rect imageRect,
-                                 float snapRadius) {
+                                 float snapRadius,
+                                 float minCropLength) {
 
-        mHelper.updateCropWindow(x, y, imageRect, snapRadius);
+        mHelper.updateCropWindow(x, y, imageRect, snapRadius, minCropLength);
     }
 
     public void updateCropWindow(float x,
                                  float y,
                                  float targetAspectRatio,
                                  Rect imageRect,
-                                 float snapRadius) {
+                                 float snapRadius,
+                                 float minCropLength) {
 
-        mHelper.updateCropWindow(x, y, targetAspectRatio, imageRect, snapRadius);
+        mHelper.updateCropWindow(x, y, targetAspectRatio, imageRect, snapRadius, minCropLength);
     }
 }

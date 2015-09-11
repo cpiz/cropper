@@ -58,24 +58,24 @@ abstract class HandleHelper {
      * @param x the new x-coordinate of this handle
      * @param y the new y-coordinate of this handle
      * @param imageRect the bounding rectangle of the image
-     * @param parentView the parent View containing the image
      * @param snapRadius the maximum distance (in pixels) at which the crop
      *            window should snap to the image
      */
     void updateCropWindow(float x,
                           float y,
                           Rect imageRect,
-                          float snapRadius) {
+                          float snapRadius,
+                          float minCropLength) {
 
         final EdgePair activeEdges = getActiveEdges();
         final Edge primaryEdge = activeEdges.primary;
         final Edge secondaryEdge = activeEdges.secondary;
 
         if (primaryEdge != null)
-            primaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, UNFIXED_ASPECT_RATIO_CONSTANT);
+            primaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, minCropLength, UNFIXED_ASPECT_RATIO_CONSTANT);
 
         if (secondaryEdge != null)
-            secondaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, UNFIXED_ASPECT_RATIO_CONSTANT);
+            secondaryEdge.adjustCoordinate(x, y, imageRect, snapRadius, minCropLength, UNFIXED_ASPECT_RATIO_CONSTANT);
     }
 
     /**
@@ -86,7 +86,6 @@ abstract class HandleHelper {
      * @param y the new y-coordinate of this handle
      * @param targetAspectRatio the aspect ratio to maintain
      * @param imageRect the bounding rectangle of the image
-     * @param parentView the parent View containing the image
      * @param snapRadius the maximum distance (in pixels) at which the crop
      *            window should snap to the image
      */
@@ -94,7 +93,8 @@ abstract class HandleHelper {
                                    float y,
                                    float targetAspectRatio,
                                    Rect imageRect,
-                                   float snapRadius);
+                                   float snapRadius,
+                                   float minCropLength);
 
     /**
      * Gets the Edges associated with this handle (i.e. the Edges that should be

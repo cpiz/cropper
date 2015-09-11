@@ -34,7 +34,8 @@ class CenterHandleHelper extends HandleHelper {
     void updateCropWindow(float x,
                           float y,
                           Rect imageRect,
-                          float snapRadius) {
+                          float snapRadius,
+                          float minCropLength) {
 
         float left = Edge.LEFT.getCoordinate();
         float top = Edge.TOP.getCoordinate();
@@ -77,8 +78,9 @@ class CenterHandleHelper extends HandleHelper {
                           float y,
                           float targetAspectRatio,
                           Rect imageRect,
-                          float snapRadius) {
+                          float snapRadius,
+                          float minCropLength) {
 
-        updateCropWindow(x, y, imageRect, snapRadius);
+        updateCropWindow(x, y, imageRect, snapRadius, minCropLength);
     }
 }

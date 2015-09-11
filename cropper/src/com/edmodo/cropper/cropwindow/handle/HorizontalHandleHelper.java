@@ -42,10 +42,11 @@ class HorizontalHandleHelper extends HandleHelper {
                           float y,
                           float targetAspectRatio,
                           Rect imageRect,
-                          float snapRadius) {
+                          float snapRadius,
+                          float minCropLength) {
 
         // Adjust this Edge accordingly.
-        mEdge.adjustCoordinate(x, y, imageRect, snapRadius, targetAspectRatio);
+        mEdge.adjustCoordinate(x, y, imageRect, snapRadius, minCropLength, targetAspectRatio);
 
         float left = Edge.LEFT.getCoordinate();
         float top = Edge.TOP.getCoordinate();
