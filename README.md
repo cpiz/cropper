@@ -1,5 +1,16 @@
 Cropper
 =======
+定制：
+
+1. 调整gradleVersion至2.3，com.android.tools.build:gradle:1.3.0
+2. 增加是否启用裁剪的选项，不启用时不显示裁剪浮层，调裁剪接口直接返回原图
+3. 修改裁剪框边线颜色（减淡），并将裁剪框显示向内缩了1/2线宽，避免拖动到边缘时边框线被吃掉一半
+4. 修改裁剪框四角样式，不超出图片范围
+5. 降低自动吸图像边界灵敏度
+6. 修改最小选取框限制为80dp，并支持使用dp单位
+7. 修正几处注释警告
+
+----
 The Cropper is an image cropping tool. It provides a way to set an image in XML and programmatically, and displays a resizable crop window on top of the image. Calling the method getCroppedImage() will then return the Bitmap marked by the crop window.
 
 Developers can customize the following attributes (both via XML and programmatically):
